@@ -27,19 +27,25 @@
                     <span class="fs-4">Stazione meteo 03A0F735</span>
                 </a>
             </header>
-            <!-- <div class="btn-group">
-                <div class="btn-group">
-                    <button type="button" id="btnPeriodo" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                        Orario <span class="caret"></span>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" id="lPeriodo" href="#">Orario</a>
-                        <a class="dropdown-item" id="lPeriodo" href="#">Giornaliero</a>
-                        <a class="dropdown-item" id="lPeriodo" href="#">Mensile</a>
-                    </div>
-                </div>
-            </div> -->
             <section class="pb-2 my-4 border-bottom border-down text-center text-body-emphasis fs-4">Grafici principali</section>
+            <div class="d-grid gap-2 d-md-block mb-2">
+                <button type="button" id="btnPeriodo" class="btn btn-primary dropdown-toggle mx-2" data-bs-toggle="dropdown">
+                    Orario <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnPeriodo">
+                    <a class="dropdown-item" id="Periodo" href="#">Orario</a>
+                    <a class="dropdown-item" id="Periodo" href="#">Giornaliero</a>
+                    <a class="dropdown-item" id="Periodo" href="#">Mensile</a>
+                </div>
+                <button type="button" id="btnIntervallo" class="btn btn-primary dropdown-toggle mx-2" data-bs-toggle="dropdown">
+                    Intervallo <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnIntervallo">
+                    <a class="dropdown-item" id="Intervallo" href="#">24 h</a>
+                    <a class="dropdown-item" id="Intervallo" href="#">1 mese</a>
+                    <a class="dropdown-item" id="Intervallo" href="#">1 anno</a>
+                </div>
+            </div>
             <div class="row align-items-md-stretch">
                 <div class="col-lg-6">
                     <div class="h-100 p-2 bg-body-tertiary rounded-3">
@@ -74,11 +80,30 @@
                 </div>
             </div>
             <section class="pb-2 my-4 border-bottom border-down text-center text-body-emphasis fs-4">Widget tabella della stazione</section>
+            <div class="d-grid gap-2 d-md-block mb-2">
+                <button type="button" id="btnIntervalloTab" class="btn btn-primary dropdown-toggle mx-2" data-bs-toggle="dropdown">
+                    Intervallo <span class="caret"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnIntervallo">
+                    <a class="dropdown-item" id="IntervalloTab" href="#">24 h</a>
+                    <a class="dropdown-item" id="IntervalloTab" href="#">1 mese</a>
+                    <a class="dropdown-item" id="IntervalloTab" href="#">1 anno</a>
+                </div>
+            </div>
             <div id="tabella" class="table table-responsive"></div>
             <footer class="pt-3 mt-4 text-body-secondary border-top text-center fw-bold">
                 Liceo Scientifico Leonardo da Vinci
             </footer>  
         </div>
         <script src="./assets/js/main.js"></script>
+        <script>
+            var elements = document.getElementsByClassName("dropdown-item");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener('click', function handleClick(event) {
+                    document.getElementById("btn" + event.target.id).innerHTML = event.target.innerHTML;
+                });
+            }
+
+        </script>
     </body>
 </html>
