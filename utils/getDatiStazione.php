@@ -3,15 +3,16 @@
     $data = json_decode(file_get_contents('php://input'), true);
     $periodo = $data['periodo'];
     
-    /* Ritorna tutti i dati della stazione delle ultime 24h se periodo = ore altrimenti dell'ultimo mese se = mese */
+    /* Ritorna tutti i dati della stazione DaVinci_Tn_2023 03A0F735 delle ultime 24h se periodo = ore altrimenti dell'ultimo mese se = mese */
 
     // Ritorna risposta in JSON
     header('Content-Type: application/json');
 
-    // chiavi HMAC (vedi documentazione)
-    $public_key = "CHIAVE_PUBBLICA";
-    $private_key = "CHIAVE_PRIVATA";
+    // chiavi HMAC
+    $public_key = "PUBLIC KEY";
+    $private_key = "PRIVATE KEY";
 
+    
     
     // Richiesta dati (https://api.fieldclimate.com/v2/docs/)
     $method = "GET";
@@ -58,5 +59,8 @@
     curl_close($ch);
     // Ritorna dati in JSON
     echo $risposta;
+
+
+
 
 ?>
