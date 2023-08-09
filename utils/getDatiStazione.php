@@ -2,6 +2,7 @@
     // Leggi parametro passato tramite fetch
     $data = json_decode(file_get_contents('php://input'), true);
     $periodo = $data['periodo'];
+    $intervallo = $data['intervallo'];
     
     /* Ritorna tutti i dati della stazione DaVinci_Tn_2023 03A0F735 delle ultime 24h se periodo = ore altrimenti dell'ultimo mese se = mese */
 
@@ -11,19 +12,53 @@
     // chiavi HMAC
     $public_key = "PUBLIC KEY";
     $private_key = "PRIVATE KEY";
-
+	
+	$id_station = "03A0F735";
     
     
     // Richiesta dati (https://api.fieldclimate.com/v2/docs/)
     $method = "GET";
-    if($periodo == "ore"){
+    $periodoTemp = "24h";
+    $intervalloTemp = "hourly";
+    if($periodo === "24 ore"){
         // Richiesta dati ultime 24 ore
-        $request = "/data/03A0F735/hourly/last/24h";
+        $periodoTemp = "24h";
     }
-    else{
-        // Richiesta dati dell'ultimo mese
-        $request = "/data/03A0F735/hourly/last/1m";
+    else if($periodo === "7 giorni"){
+        // Richiesta dati ultimi 7 giorni
+        $periodoTemp = "7d";
     }
+    else if($periodo === "30 giorni"){
+        // Richiesta dati ultimi 30 giorni
+        $periodoTemp = "30d";
+    }
+    else if($periodo === "1 mese"){
+        // Richiesta dati ultimo mese
+        $periodoTemp = "1m";
+    }
+    else if($periodo === "12 mesi"){
+        // Richiesta dati ultimi 12 mesi
+        $periodoTemp = "12m";
+    }
+    else if($periodo === "24 mesi"){
+        // Richiesta dati ultimi 24 mesi
+        $periodoTemp = "24m";
+    }
+    else if($periodo === "36 mesi"){
+        // Richiesta dati ultimi 36 mesi
+        $periodoTemp = "36m";
+    }
+
+    if($intervallo === "Orario"){
+        $intervalloTemp = "hourly";
+    }
+    if($intervallo === "Giornaliero"){
+        $intervalloTemp = "daily";
+    }
+    if($intervallo === "Mensile"){
+        $intervalloTemp = "monthly";
+    }
+    $request = "/data/" . $id_station . "/" . $intervalloTemp . "/last/" . $periodoTemp;
     
     
     //// Richiesta al sito fieldclimate ////

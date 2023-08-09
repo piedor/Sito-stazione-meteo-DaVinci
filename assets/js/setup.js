@@ -1,5 +1,9 @@
 // https://api.highcharts.com/highcharts/lang.accessibility
-// Grafico per temperatura aria
+
+var gFito1;
+var gFito2;
+var gExtra = [];
+
 function setupCharts(){
     // Impostazioni grafici generale (lingua, ecc...)
     Highcharts.setOptions({
@@ -31,104 +35,186 @@ function setupCharts(){
 }
 
 function setGraph(id, tipo, desc, tY, vS, tSerie, serie, colore){
-    (async () => {
-        Highcharts.chart(id, {
-            chart: {
-                type: tipo
+    var options = {
+        chart: {
+            renderTo: id,
+            type: tipo
+        },
+        title: {
+            text: desc
+        },
+        xAxis: {
+            type: 'datetime',
+            accessibility: {
+                rangeDescription: 'Range di una giornata.'
             },
             title: {
-                text: desc
+                text: null
             },
-            xAxis: {
-                type: 'datetime',
-                accessibility: {
-                    rangeDescription: 'Range di una giornata.'
-                },
-                title: {
-                    text: null
-                },
-                labels: {
-                    format: '{value:%e %b}'
-                }
-            },
-            yAxis: {
-                type: 'datetime',
-                title: {
-                    text: tY
-                },
-                labels: {
-                    formatter: function () {
-                        const date = new Date(this.value);
-                        const M = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-                        const H = (date.getHours() < 10 ? '0' : '') + date.getHours();
-                        return `${H}:${M}`
-                    }
-                }
-            },
-            tooltip: {
-                crosshairs: true,
-                shared: true,
-                formatter: function () {
-                    const dateY = new Date(this.y);
-                    const M = (dateY.getMinutes() < 10 ? '0' : '') + dateY.getMinutes();
-                    const H = (dateY.getHours() < 10 ? '0' : '') + dateY.getHours();
-                    
-                    return `${Highcharts.dateFormat('%A, %e %b',
-                    new Date(this.x))}<br/>${this.series.name}: <b>${H}:${M}</b>`
-                }
-            },
-            legend: {
-                enabled: true
-            },
-            series: [{
-                name: tSerie,
-                data: serie,
-                color: colore
-            }],
-            exporting: {
-                buttons: {
-                    contextButton: {
-                        menuItems: [
-                            "viewFullscreen", 
-                            "printChart", 
-                            "separator", 
-                            "downloadPNG", 
-                            "downloadJPEG", 
-                            "downloadPDF",
-                            "downloadSVG",
-                            "separator",
-                            "downloadCSV",
-                            "downloadXLS"
-                        ]
-                    }
-                }
-            },
-            credits: {
-                text: 'Liceo Da Vinci Trento',
-                href: 'https://liceodavincitn.it/'
+            labels: {
+                format: '{value:%e %b}'
             }
-        });
-    })();
+        },
+        yAxis: {
+            type: 'datetime',
+            title: {
+                text: tY
+            },
+            labels: {
+                formatter: function () {
+                    const date = new Date(this.value);
+                    const M = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+                    const H = (date.getHours() < 10 ? '0' : '') + date.getHours();
+                    return `${H}:${M}`
+                }
+            }
+        },
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            formatter: function () {
+                const dateY = new Date(this.y);
+                const M = (dateY.getMinutes() < 10 ? '0' : '') + dateY.getMinutes();
+                const H = (dateY.getHours() < 10 ? '0' : '') + dateY.getHours();
+                
+                return `${Highcharts.dateFormat('%A, %e %b %Y',
+                new Date(this.x))}<br/>${this.series.name}: <b>${H}:${M}</b>`
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        series: [{
+            name: tSerie,
+            data: serie,
+            color: colore
+        }],
+        exporting: {
+            buttons: {
+                contextButton: {
+                    menuItems: [
+                        "viewFullscreen", 
+                        "printChart", 
+                        "separator", 
+                        "downloadPNG", 
+                        "downloadJPEG", 
+                        "downloadPDF",
+                        "downloadSVG",
+                        "separator",
+                        "downloadCSV",
+                        "downloadXLS"
+                    ]
+                }
+            }
+        },
+        credits: {
+            text: 'Liceo Da Vinci Trento',
+            href: 'https://liceodavincitn.it/'
+        }
+    };
+
+    gExtra.push(new Highcharts.Chart(options));
 }
 
 function setGrafici(serieTemperatura, serieRangeTemp, seriePrecipitazioni, serieRUmidita, serieRugiada, seriePressioneVapore, serieLUmidita){
-    (async () => {
-        Highcharts.chart("gFito1", {
+    var optionsG1 = {
+        chart: {
+            renderTo: 'gFito1'
+        },
+        title: {
+            text: "Dati meteo per fitopatie"
+        },
+        xAxis: {
+            type: 'datetime',
+            accessibility: {
+                rangeDescription: 'Range di una giornata.'
+            },
             title: {
-                text: "Dati delle ultime 24 ore"
+                text: null
+            }
+        },
+        yAxis: [{
+            title: {
+                text: "Temperatura [C°]"
             },
-            xAxis: {
-                type: 'datetime',
-                accessibility: {
-                    rangeDescription: 'Range di una giornata.'
-                },
-                title: {
-                    text: null
-                }
+            labels: {
+                format: '{value}'
+            }
+        },
+        {
+            title: {
+                text: "Deficit di pressione di vapore [kPa]"
             },
-            yAxis: [{
+            labels: {
+                format: '{value}'
+            },
+            opposite: true
+        }],
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: "°C"
+        },
+        legend: {
+            enabled: true
+        },
+        series: [
+        {
+            name: "Range temperatura aria",
+            color: "#ffb3b3",
+            type: "arearange",
+            data: serieRangeTemp,
+            showInLegend: false
+        },    
+        {
+            name: "Temperatura aria",
+            color: "#ff0000",
+            type: "spline",
+            data: serieTemperatura
+        },
+        {
+            name: "Punto di rugiada",
+            color: "#80aaff",
+            type: "spline",
+            data: serieRugiada
+        },
+        {
+            name: "Deficit di pressione di vapore",
+            color: "#2eb82e",
+            type: "spline",
+            data: seriePressioneVapore,
+            yAxis: 1,
+            tooltip: {
+                valueSuffix: "kPa"
+            }
+        }
+        ],
+        credits: {
+            text: 'Liceo Da Vinci Trento',
+            href: 'https://liceodavincitn.it/'
+        }
+    };
+
+    var optionsG2 = {
+        chart: {
+            renderTo: 'gFito2'
+        },
+        title: {
+            text: "Dati meteo per fitopatie"
+        },
+        xAxis: {
+            type: 'datetime',
+            accessibility: {
+                rangeDescription: 'Range di una giornata.'
+            },
+            title: {
+                text: null
+            }
+        },
+        yAxis: [
+            {
                 title: {
-                    text: "Temperatura [C°]"
+                    text: "Precipitazioni [mm]"
                 },
                 labels: {
                     format: '{value}'
@@ -136,149 +222,94 @@ function setGrafici(serieTemperatura, serieRangeTemp, seriePrecipitazioni, serie
             },
             {
                 title: {
-                    text: "Deficit di pressione di vapore [kPa]"
+                    text: "Umidità fogliare [min]"
                 },
                 labels: {
                     format: '{value}'
                 },
                 opposite: true
-            }],
-            tooltip: {
-                crosshairs: true,
-                shared: true,
-                valueSuffix: "°C",
-                xDateFormat: '%A, %e %b, %H:%M:%S'
-            },
-            legend: {
-                enabled: true
-            },
-            series: [
-            {
-                name: "Range temperatura aria",
-                color: "#ffb3b3",
-                type: "arearange",
-                data: serieRangeTemp,
-                showInLegend: false
-            },    
-            {
-                name: "Temperatura aria",
-                color: "#ff0000",
-                type: "spline",
-                data: serieTemperatura
             },
             {
-                name: "Punto di rugiada",
-                color: "#80aaff",
-                type: "spline",
-                data: serieRugiada
-            },
-            {
-                name: "Deficit di pressione di vapore",
-                color: "#2eb82e",
-                type: "spline",
-                data: seriePressioneVapore,
-                yAxis: 1,
-                tooltip: {
-                    valueSuffix: "kPa"
-                }
-            }
-            ],
-            credits: {
-                text: 'Liceo Da Vinci Trento',
-                href: 'https://liceodavincitn.it/'
-            }
-        });
-    })();
-
-    (async () => {
-        Highcharts.chart("gFito2", {
-            title: {
-                text: "Dati delle ultime 24 ore"
-            },
-            xAxis: {
-                type: 'datetime',
-                accessibility: {
-                    rangeDescription: 'Range di una giornata.'
-                },
                 title: {
-                    text: null
-                }
-            },
-            yAxis: [
-                {
-                    title: {
-                        text: "Precipitazioni [mm]"
-                    },
-                    labels: {
-                        format: '{value}'
-                    }
+                    text: "Umidità relativa [%]"
                 },
-                {
-                    title: {
-                        text: "Umidità fogliare [min]"
-                    },
-                    labels: {
-                        format: '{value}'
-                    },
-                    opposite: true
+                labels: {
+                    format: '{value}'
                 },
-                {
-                    title: {
-                        text: "Umidità relativa [%]"
-                    },
-                    labels: {
-                        format: '{value}'
-                    },
-                    opposite: true
-                }
-            ],
-            tooltip: {
-                crosshairs: true,
-                shared: true,
-                valueSuffix: "mm",
-                xDateFormat: '%A, %e %b, %H:%M:%S'
-            },
-            legend: {
-                enabled: true
-            },
-            series: [
-            {
-                name: "Precipitazioni",
-                color: "#008ae6",
-                type: "column",
-                data: seriePrecipitazioni
-            },      
-            {
-                name: "Umidità fogliare",
-                color: "#009900",
-                type: "column",
-                data: serieLUmidita,
-                yAxis: 1,
-                tooltip: {
-                    valueSuffix: "min"
-                }
-            },
-            {
-                name: "Umidità relativa",
-                color: "#800080",
-                type: "spline",
-                data: serieRUmidita,
-                yAxis: 1,
-                tooltip: {
-                    valueSuffix: "%"
-                }
-            }],
-            credits: {
-                text: 'Liceo Da Vinci Trento',
-                href: 'https://liceodavincitn.it/'
+                opposite: true
             }
-        });
-    })();
+        ],
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: "mm"
+        },
+        legend: {
+            enabled: true
+        },
+        series: [
+        {
+            name: "Precipitazioni",
+            color: "#008ae6",
+            type: "column",
+            data: seriePrecipitazioni
+        },      
+        {
+            name: "Umidità fogliare",
+            color: "#009900",
+            type: "column",
+            data: serieLUmidita,
+            yAxis: 1,
+            tooltip: {
+                valueSuffix: "min"
+            }
+        },
+        {
+            name: "Umidità relativa",
+            color: "#800080",
+            type: "spline",
+            data: serieRUmidita,
+            yAxis: 1,
+            tooltip: {
+                valueSuffix: "%"
+            }
+        }],
+        credits: {
+            text: 'Liceo Da Vinci Trento',
+            href: 'https://liceodavincitn.it/'
+        }
+    };
+    gFito1 = new Highcharts.Chart(optionsG1);
+    gFito2 = new Highcharts.Chart(optionsG2);
+}
+
+function addLoadHtml(){
+    // Aggiungi spinner attesa
+    let loadHtml = '<div class="d-flex justify-content-center align-items-center"><span class="mt-3 fs-3"><strong>Caricamento dati...</strong></span><div class="spinner-grow ms-2" role="status"><span class="sr-only visually-hidden">Loading...</span></div></div>';
+    document.getElementById("gFito1").innerHTML = loadHtml;
+    document.getElementById("gFito2").innerHTML = loadHtml;
+    document.getElementById("gSuns").innerHTML = loadHtml;
+    document.getElementById("gSunr").innerHTML = loadHtml;
+}
+
+function resetGrafici(){
+    // Cancella i grafici
+    gFito1.destroy();
+    gFito2.destroy();
+    gExtra.map(function(g){
+        g.destroy();
+    });
+    // Cancella array grafici extra
+    while(gExtra.length) {
+        gExtra.pop();
+    }
+    addLoadHtml();
 }
 
 function initTableData(date, dati){
     // Inserisci dati nella tabella
     var tabella = document.getElementById("tabella");
+    tabella.innerHTML = "";
 
     var table = document.createElement('TABLE');
     //table.border = '1';
