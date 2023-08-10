@@ -35,6 +35,7 @@ function setupCharts(){
 }
 
 function setGraph(id, tipo, desc, tY, vS, tSerie, serie, colore){
+    // Funzione generale per graficare una serie
     var options = {
         chart: {
             renderTo: id,
@@ -117,6 +118,7 @@ function setGraph(id, tipo, desc, tY, vS, tSerie, serie, colore){
 }
 
 function setGrafici(serieTemperatura, serieRangeTemp, seriePrecipitazioni, serieRUmidita, serieRugiada, seriePressioneVapore, serieLUmidita){
+    // Funzione per graficare i dati per fitopatie
     var optionsG1 = {
         chart: {
             renderTo: 'gFito1'
@@ -312,7 +314,6 @@ function initTableData(date, dati){
     tabella.innerHTML = "";
 
     var table = document.createElement('TABLE');
-    //table.border = '1';
     table.setAttribute("class", "table table-hover table-bordered");
 
 

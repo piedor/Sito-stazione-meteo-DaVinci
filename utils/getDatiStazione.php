@@ -4,7 +4,7 @@
     $periodo = $data['periodo'];
     $intervallo = $data['intervallo'];
     
-    /* Ritorna tutti i dati della stazione */
+    /* Ritorna tutti i dati della stazione DaVinci_Tn_2023 03A0F735 */
 
     // Ritorna risposta in JSON
     header('Content-Type: application/json');

@@ -29,10 +29,12 @@ var serieAlba = [];
 const intSuPeriodo = {"Orario": ["24 ore", "7 giorni", "30 giorni"], 
 "Giornaliero": ["7 giorni", "30 giorni"], "Mensile": ["12 mesi", "24 mesi", "36 mesi"]}
 
+// main: setta click su lista a cascata, prendi i dati
 addLoadHtml();
 updateListeIntervalli();
 getDatiStazione();
 
+// Click sul pulsante aggiorna
 document.getElementById("btnUpdate").addEventListener('click', function handleClick(event) {
     resetGrafici();
     getDatiStazione(document.getElementById("btnIntervallo").textContent.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim(), 
