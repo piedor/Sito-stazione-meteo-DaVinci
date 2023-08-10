@@ -10,10 +10,10 @@
     header('Content-Type: application/json');
 
     // chiavi HMAC
-    $public_key = "PUBLIC KEY";
-    $private_key = "PRIVATE KEY";
+    $public_key = "PUBLIC KEY"; // CHANGE HERE
+    $private_key = "PRIVATE KEY"; // CHANGE HERE
 
-    $id_stazione = "ID STATION";
+    $id_stazione = "ID STATION"; // CHANGE HERE
     
     // Richiesta dati (https://api.fieldclimate.com/v2/docs/)
     $method = "GET";
