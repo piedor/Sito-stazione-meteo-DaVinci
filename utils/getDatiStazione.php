@@ -4,7 +4,7 @@
     $periodo = $data['periodo'];
     $intervallo = $data['intervallo'];
     
-    /* Ritorna tutti i dati della stazione DaVinci_Tn_2023 03A0F735 delle ultime 24h se periodo = ore altrimenti dell'ultimo mese se = mese */
+    /* Ritorna tutti i dati della stazione */
 
     // Ritorna risposta in JSON
     header('Content-Type: application/json');
@@ -12,9 +12,8 @@
     // chiavi HMAC
     $public_key = "PUBLIC KEY";
     $private_key = "PRIVATE KEY";
-	
-	$id_station = "03A0F735";
-    
+
+    $id_stazione = "ID STATION";
     
     // Richiesta dati (https://api.fieldclimate.com/v2/docs/)
     $method = "GET";
@@ -58,7 +57,7 @@
     if($intervallo === "Mensile"){
         $intervalloTemp = "monthly";
     }
-    $request = "/data/" . $id_station . "/" . $intervalloTemp . "/last/" . $periodoTemp;
+    $request = "/data/" . $id_stazione . "/" . $intervalloTemp . "/last/" . $periodoTemp;
     
     
     //// Richiesta al sito fieldclimate ////
@@ -94,8 +93,4 @@
     curl_close($ch);
     // Ritorna dati in JSON
     echo $risposta;
-
-
-
-
 ?>
