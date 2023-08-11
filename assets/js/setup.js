@@ -271,7 +271,7 @@ function setGrafici(serieTemperatura, serieRangeTemp, seriePrecipitazioni, serie
             color: "#800080",
             type: "spline",
             data: serieRUmidita,
-            yAxis: 1,
+            yAxis: 2,
             tooltip: {
                 valueSuffix: "%"
             }
